@@ -52,18 +52,32 @@
           scope.$broadcast('branch_selected_highlight', {id: branch});
         }
 
+        /**
+         * Marks all nodes as expanded and viewable
+         * @return {n/a}
+         */
         function expandAll() {
           scope.treeData.forEach(function(b) {
             toggleGroupVisibility(b, true);
           });
         }
 
+        /**
+         * Marks all nodes a not expanded and not viewable
+         * @return {n/a}
+         */
         function collapseAll() {
           scope.treeData.forEach(function(b) {
             toggleGroupVisibility(b, false);
           });
         }
 
+        /**
+         * Changes the visibility all of a group and it's children
+         * @param  {branch object} branch [The branch object that will be made viewable]
+         * @param  {boolean} show   [Show / hide the branch]
+         * @return {n/a}
+         */
         function toggleGroupVisibility(branch, show) {
           branch.expanded = show;
           branch.viewable = show;

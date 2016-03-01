@@ -77,6 +77,15 @@ describe('directive: tree-view', function() {
 		expect(viewables).not.toHaveTrue();
 	});
 
+	it('should ensure that expand all marks all nodes as expanded and viewable', function() {
+		var innerScope = treeViewElement.isolateScope();
+		innerScope.$digest();
+		innerScope.expandAll();
+
+		expect(scope.treedata[0].expanded).toBeTrue();
+		expect(scope.treedata[0].viewable).toBeTrue();
+	});
+
 	describe('directive: tree-root', function() {
 		it('should replace tree-root with structure', function() {
 			var treeRootDirective = treeRootElement.find('tree-root');
