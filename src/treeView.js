@@ -83,7 +83,7 @@
          * @return {n/a}
          */
         function buildNodes() {
-          if (angular.isArray(scope.branch.children)) {
+          if (scope.branch && scope.branch.children && angular.isArray(scope.branch.children)) {
             element.append('<tree-root root="branch.children"></tree-view>');
             $compile(element.contents())(scope);
           }

@@ -49,6 +49,6 @@ gulp.task('tests', function(done) {
 	}, done()).start();
 });
 
-gulp.task('default', ['test', 'compile', 'compile:uglify', 'sass:compile', 'sass:minify'], function() {
+gulp.task('default', ['tests', 'compile', 'compile:uglify', 'sass:compile', 'sass:minify'], function() {
 
 });
