@@ -1,0 +1,11 @@
+{
+  "name": "treeview",
+  "version": "1.0.0",
+  "description": "An Angular module for binding a data tree",
+  "main": "treeView.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
