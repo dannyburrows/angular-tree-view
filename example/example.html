@@ -17,8 +17,15 @@
   <div class="container">
     <h2>Tree View Test</h2>
     <br/>
+    <p>{{tree.selected}}</p>
+    <div class="col-md-12">
+      <button class="btn btn-default" ng-click="tree.expandAll()">Expand All</button>
+    </div>
+    <div class="col-md-12">
+      <button class="btn btn-default" ng-click="tree.collapseAll()">Collapse All</button>
+    </div>
     <div class="col-md-6">
-      <tree-view tree-data="tree.treedata"></tree-view>
+      <tree-view tree-data="tree.treedata" selected="tree.selected" expand-all="tree.expandAll" collapse-all="tree.collapseAll"></tree-view>
     </div>
   </div>
 

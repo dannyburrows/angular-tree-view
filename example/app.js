@@ -7,7 +7,7 @@
 
 	function treecontroller() {
 		var vm = this;
-
+		vm.selected = null;
 		vm.treedata = 
 		[{
 			"id": 50,

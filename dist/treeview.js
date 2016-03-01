@@ -16,10 +16,14 @@
       template: '<tree-root root="treeData"></tree-root>',
       scope: {
         treeData: '=',
-        selected: '@'
+        selected: '=',
+        expandAll: '=',
+        collapseAll: '='
       },
       link: function(scope, attrs) {
         scope.selected = -1;
+        scope.expandAll = expandAll;
+        scope.collapseAll = collapseAll;
 
         processData();
         scope.$on('branch_selected', branchSelected);
@@ -46,6 +50,28 @@
         function branchSelected(event, branch) {
           scope.selected = branch;
           scope.$broadcast('branch_selected_highlight', {id: branch});
+        }
+
+        function expandAll() {
+          scope.treeData.forEach(function(b) {
+            toggleGroupVisibility(b, true);
+          });
+        }
+
+        function collapseAll() {
+          scope.treeData.forEach(function(b) {
+            toggleGroupVisibility(b, false);
+          });
+        }
+
+        function toggleGroupVisibility(branch, show) {
+          branch.expanded = show;
+          branch.viewable = show;
+          if (branch.children && angular.isArray(branch.children)) {
+            branch.children.forEach(function(c) {
+              toggleGroupVisibility(c, show);
+            });
+          };
         }
       }
     };
