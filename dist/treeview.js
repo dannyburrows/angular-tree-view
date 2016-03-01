@@ -2,10 +2,10 @@
   'use strict';
 
   treeBranch.$inject = ["$compile"];
-  angular.module('monsciergeTreeView', []);
+  angular.module('monsciergetreeview', []);
 
   angular
-  .module('monsciergeTreeView')
+  .module('monsciergetreeview')
   .directive('treeView', treeView)
   .directive('treeRoot', treeRoot)
   .directive('treeBranch', treeBranch);

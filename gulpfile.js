@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var ngAnnotate = require('gulp-ng-annotate');
-var minify = require('gulp-minify');
+var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 
@@ -26,10 +26,12 @@ gulp.task('compile', function() {
 		.pipe(gulp.dest('./dist'))
 });
 
-gulp.task('compile:minify', function() {
+gulp.task('compile:uglify', function() {
 	return gulp.src('./src/**/*.js')
 		.pipe(ngAnnotate())
-		.pipe(minify())
+		.pipe(uglify({
+			ext: { src:'*.js', min: '.js'}
+		}))
 		.pipe(rename('treeview.min.js'))
 		.pipe(gulp.dest('./dist'))
 });
@@ -39,6 +41,6 @@ gulp.task('clean', function() {
 		.pipe(clean())
 });
 
-gulp.task('default', ['compile', 'compile:minify', 'sass:compile', 'sass:minify'], function() {
+gulp.task('default', ['compile', 'compile:uglify', 'sass:compile', 'sass:minify'], function() {
 
 });
