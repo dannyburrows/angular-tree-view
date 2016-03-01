@@ -9,8 +9,7 @@
 		var vm = this;
 
 		vm.treedata = 
-		[
-		{
+		[{
 			"id": 50,
 			"parent_id": null,
 			"label": "Monscierge",
@@ -17024,7 +17023,6 @@
 				]
 			}
 			]
-		}
-		];
+		}];
 	}
 })();

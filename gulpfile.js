@@ -4,6 +4,7 @@ var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var clean = require('gulp-clean');
+var karma = require('karma').Server;
 
 gulp.task('sass:compile', function() {
 	return gulp.src('./src/**/*.scss')
@@ -41,6 +42,13 @@ gulp.task('clean', function() {
 		.pipe(clean())
 });
 
-gulp.task('default', ['compile', 'compile:uglify', 'sass:compile', 'sass:minify'], function() {
+gulp.task('tests', function(done) {
+	new karma({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: true
+	}, done()).start();
+});
+
+gulp.task('default', ['test', 'compile', 'compile:uglify', 'sass:compile', 'sass:minify'], function() {
 
 });
