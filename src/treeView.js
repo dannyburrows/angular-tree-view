@@ -16,8 +16,8 @@
       scope: {
         treeData: '=',
         selected: '=',
-        expandAll: '=',
-        collapseAll: '='
+        expandAll: '=?',
+        collapseAll: '=?'
       },
       link: function(scope, attrs) {
         scope.selected = -1;

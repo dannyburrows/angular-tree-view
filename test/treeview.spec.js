@@ -84,6 +84,10 @@ describe('directive: tree-view', function() {
 
 		expect(scope.treedata[0].expanded).toBeTrue();
 		expect(scope.treedata[0].viewable).toBeTrue();
+		var childrenExpandable = scope.treedata[0].children.map(function(c) {return c.expanded;}); 
+		expect(childrenExpandable).not.toHaveFalse();
+		var childrenViewable = scope.treedata[0].children.map(function(c) {return c.viewable;}); 
+		expect(childrenViewable).not.toHaveFalse();
 	});
 
 	it('should ensure that collapse all marks all nodes as not expanded and not viewable', function() {
@@ -93,6 +97,10 @@ describe('directive: tree-view', function() {
 
 		expect(scope.treedata[0].expanded).toBeFalse();
 		expect(scope.treedata[0].viewable).toBeFalse();
+		var childrenExpandable = scope.treedata[0].children.map(function(c) {return c.expanded;}); 
+		expect(childrenExpandable).not.toHaveTrue();
+		var childrenViewable = scope.treedata[0].children.map(function(c) {return c.viewable;}); 
+		expect(childrenViewable).not.toHaveTrue();
 	});
 
 	describe('directive: tree-root', function() {
