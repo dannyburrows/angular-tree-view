@@ -5,29 +5,66 @@
   angular.module('monsciergetreeview', []);
 
   angular
-  .module('monsciergetreeview')
-  .directive('treeView', treeView)
-  .directive('treeRoot', treeRoot)
-  .directive('treeBranch', treeBranch);
+    .module('monsciergetreeview')
+    .directive('treeView', treeView)
+    .directive('treeRoot', treeRoot)
+    .directive('treeBranch', treeBranch);
 
   function treeView() {
     return {
       restrict: 'E',
-      template: '<tree-root root="treeData"></tree-root>',
+      template: '<tree-root root="searchData"></tree-root>',
       scope: {
         treeData: '=',
         selected: '=',
         expandAll: '=?',
-        collapseAll: '=?'
+        collapseAll: '=?',
+        treeSearch: '=?'
       },
       link: function(scope, attrs) {
         scope.selected = -1;
         scope.expandAll = expandAll;
         scope.collapseAll = collapseAll;
-
+        angular.copy(scope.treeData, scope.searchData); // save original data, but make copy for searching
         processData();
+
         scope.$on('branch_selected', branchSelected);
-        
+        scope.$watch('treeSearch', searchTree);
+
+        /**
+         * Searches the data tree to try and find the search parameters
+         */
+        function searchTree() {
+          scope.selected = -1;
+          // search the tree, build display
+          if (scope.treeSearch) {
+            scope.searchData = [];
+            scope.treeData.forEach(function (t) {
+              traverse(t, scope.searchData);
+            });
+          } else if (scope.treeSearch == "") {
+            scope.searchData = scope.treeData; // restore original
+          }
+        }
+
+        /**
+         * Recursively traverses the tree to determine if a node meets the criteria
+         * @param current node to check
+         * @param nodes that meet the search criteria
+         */
+        function traverse(node, nodes) {
+          if (node.label.toLowerCase().indexOf(scope.treeSearch.toLowerCase()) > -1 || scope.treeSearch == "") {
+            nodes.push({label: node.label, id: node.id, expanded: true, root: true });
+          }
+
+          if (node.children && node.children.length > 0) {
+            node.children.forEach(function (n) {
+              traverse(n, nodes);
+            });
+          }
+          return;
+        }
+
         /**
          * Iterates data structure at first level, assigning proper values to intiate the tree structure
          * @return {n/a}
@@ -85,7 +122,7 @@
             branch.children.forEach(function(c) {
               toggleGroupVisibility(c, show);
             });
-          };
+          }
         }
       }
     };
@@ -105,7 +142,7 @@
   function treeBranch($compile) {
     return {
       restrict: 'E',
-      template: '<div style="cursor: pointer" ng-click="toggle(branch);$event.stopPropagation()" ng-show="branch.viewable || branch.root"><div ng-class="{\'tree-view-selected\': branch.selected}"><span ng-class="{\'glyphicon glyphicon-plus\': !branch.expanded && (branch.children && branch.children.length > 0), \'glyphicon glyphicon-minus\': branch.expanded && (branch.children != null && branch.children.length > 0), \'glyphicon glyphicon-file\': (branch.children == null || branch.children.length == 0)}"></span> {{branch.label}}</div></div>',
+      template: '<div style="cursor: pointer;" ng-click="toggle(branch);$event.stopPropagation()" ng-show="branch.viewable || branch.root"><div ng-class="{\'tree-view-selected\': branch.selected}"><span ng-class="{\'glyphicon glyphicon-plus\': !branch.expanded && (branch.children && branch.children.length > 0), \'glyphicon glyphicon-minus\': branch.expanded && (branch.children != null && branch.children.length > 0), \'glyphicon glyphicon-file\': (branch.children == null || branch.children.length == 0)}"></span> {{branch.label}}</div></div>',
       replace: true,
       scope: {
         branch: '='
@@ -136,16 +173,16 @@
          * @param  {object} contains branch id that was just selected
          * @return {n/a}
          */
-         function highlightBranch(event, branch) {
+        function highlightBranch(event, branch) {
           scope.branch.selected = (branch.id == scope.last_selected);
         }
-        
+
         /**
          * Iterates the branch to build the expected model for the UI
          * @param  {branch object} Branch serving as the root
          * @return {n/a}
          */
-         function buildBranchesModels(branch) {
+        function buildBranchesModels(branch) {
           if (branch) {
             branch.viewable = false;
             if (branch.children && angular.isArray(branch.children)) {
@@ -156,34 +193,36 @@
             }
           }
         }
-        
+
         /**
          * Toggles the display of the branch
          * @param  {branch object}
          * @return {n/a}
          */
-         function toggle(branch) {
+        function toggle(branch) {
           scope.last_selected = branch.id;
           scope.$emit('branch_selected', branch.id);
           if (branch.expanded !== null) {
             branch.expanded = !branch.expanded;
-            branch.children.forEach(function(c) {
-              c.viewable = branch.expanded;
-              if (!c.viewable) {
-                hideChildren(c, false);
-                c.expanded = false;
-              }
-            });
+            if (branch.children && angular.isArray(branch.children)) {
+              branch.children.forEach(function (c) {
+                c.viewable = branch.expanded;
+                if (!c.viewable) {
+                  hideChildren(c, false);
+                  c.expanded = false;
+                }
+              });
+            }
           }
         }
-        
+
         /**
          * Recursively iterates children objects to toggle whether they should be displayed
          * @param  {branch object}
          * @param  {boolean}
          * @return {boolean}
          */
-         function hideChildren(branch, show) {
+        function hideChildren(branch, show) {
           if (!branch.children || !angular.isArray(branch.children) || branch.children.length <= 0) {
             return false;
           }

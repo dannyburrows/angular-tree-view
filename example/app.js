@@ -8,6 +8,7 @@
 	function treecontroller() {
 		var vm = this;
 		vm.selected = null;
+		vm.search = "";
 		vm.treedata = [{
 			id: 1,
 			parent_id: null,
