@@ -37,7 +37,7 @@
         function searchTree() {
           scope.selected = -1;
           // search the tree, build display
-          if (scope.treeSearch) {
+          if (scope.treeSearch && scope.treeSearch.length > 2) {
             scope.searchData = [];
             scope.treeData.forEach(function (t) {
               traverse(t, scope.searchData);
