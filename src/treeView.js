@@ -42,7 +42,7 @@
             scope.treeData.forEach(function (t) {
               traverse(t, scope.searchData);
             });
-          } else if (scope.treeSearch == "") {
+          } else if (scope.treeSearch == undefined || scope.treeSearch == "") {
             scope.searchData = scope.treeData; // restore original
           }
         }
